@@ -1,0 +1,24 @@
+{
+  "name": "url_shortner",
+  "version": "1.0.0",
+  "description": "a url shortner for freecodecamp.com",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jstoebel/url_shortner.git"
+  },
+  "author": "Jacob Stoebel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jstoebel/url_shortner/issues"
+  },
+  "homepage": "https://github.com/jstoebel/url_shortner#readme",
+  "dependencies": {
+    "express": "^4.14.0",
+    "mongodb": "^2.2.11"
+  }
+}
