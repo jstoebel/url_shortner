@@ -5,62 +5,45 @@ var app = express()
 
 mongo.connect(url, function(err, db) {
 
-    // set up a counter collection
-    // var counter = db.collection('counter');
-    var urlCol = db.collection('urls');
-    console.log(urlCol.count())
-  //   counter.insert(
-  //     {
-  //       _id: "urls",
-  //       seq: 0
-  //     }
-  //   )
-  //
-  //   counter.findAndModify({
-  //     query: {_id: "urls"},
-  //     update: { $inc: { seq: 1 } },
-  //     new: true
-  //   })
-  //
-  //   counter.find({
-  //     "_id" : "urls"
-  //   }).toArray(function(err, documents) {
-  //   console.log(documents)
-  // })
-  //
-  //   function getNextSequence(name) {
-  //      var ret = counter.findAndModify(
-  //             {
-  //               query: { _id: name },
-  //               update: { $inc: { seq: 1 } },
-  //               new: true
-  //             }
-  //      );
-  //
-  //      return ret.seq;
-  //   }
+    if (err){ throw "failed to connect to mongo db";}
 
-    // console.log(getNextSequence("urls"))
-    // console.log(getNextSequence("urls"))
-    //
-    app.get(/new\/(.*)/, function(req, res) {
-      var url = req.params[0]
-      var urlMatch = /https?:\/\/.*\..*/
-      if (url.match(urlMatch)){
-        // valid url
-        var record = {"origUrl": url, "newUrl": urlCol.count() }
-        urlCol.insert(record, function(err,createdRecord){
-          if (err){
-            throw err
-          }
-          console.log("new url created!")
-          console.log(createdRecord);
-        });
-      } else {
-        // invalud url
-        console.log("invalid url")
-      }
-    })
+    var urlCol = db.collection('urls');
+
+    app.get("/new", function(req, res) {
+
+      urlCol.find({}).toArray(function(err, documents) {
+        var docCount = documents.length
+
+        var url = req.query.url
+        console.log(url)
+        var urlMatch = /https?:\/\/.*\..*/
+        if (url.match(urlMatch)){
+          // valid url
+          var record = {"origUrl": url, "newUrl": docCount }
+          urlCol.insert(record, function(err,createdRecord){
+            if (err){
+              throw "could not insert record"
+            }
+            console.log("new url created!")
+            var fullUrl = req.protocol + '://' + req.get('host') + "/" + docCount;
+            var obj = JSON.stringify({
+              "origUrl": url,
+              "newUrl": fullUrl
+            })
+            res.end(obj)
+          });
+        } else {
+          // invalud url
+          var obj = JSON.stringify({
+            "origUrl": url,
+            "newUrl": null
+          })
+          console.log(obj)
+          res.end(obj)
+        }
+
+      }) // collection count
+    }) // get
 
 })
 
