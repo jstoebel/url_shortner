@@ -45,6 +45,15 @@ mongo.connect(url, function(err, db) {
       }) // collection count
     }) // get
 
+    app.get(/(\d.*)/, function(req, res){
+
+      var newUrl = Number(req.params[0])
+      urlCol.findOne({  "newUrl": newUrl}, function(err, record){
+        res.redirect(record.origUrl)
+      })
+
+    }) //
+
 })
 
 app.listen(process.env.PORT || 3000)
