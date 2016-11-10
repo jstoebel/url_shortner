@@ -1,6 +1,6 @@
 var express = require('express')
 var mongo = require('mongodb').MongoClient
-var url = "mongodb://localhost:27017/main"
+var url = process.env.MONGODB_URI || "mongodb://localhost:27017/main"
 var app = express()
 
 mongo.connect(url, function(err, db) {
