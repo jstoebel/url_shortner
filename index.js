@@ -1,4 +1,5 @@
 var express = require('express')
+var jade = require('jade')
 var mongo = require('mongodb').MongoClient
 var url = process.env.MONGODB_URI || "mongodb://localhost:27017/main"
 var app = express()
@@ -58,6 +59,12 @@ mongo.connect(url, function(err, db) {
       })
 
     }) //get url
+
+    app.get("/", function(req, res){
+      app.set('views', "views")
+      app.set('view engine', 'jade')
+      res.render('main')
+    })
 
 })
 

@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    title URL shotener, By Jacob Stoebel
+  body
+    h1 URL shotener, By Jacob Stoebel
+    p This microservice fufills the assignment on Freecodecamp.com #[a(href="https://www.freecodecamp.com/challenges/timestamp-microservice" target="_blank") here].
+    h2 User stories
+    ul
+      li I can pass a URL as a parameter and I will receive a shortened URL in the JSON response.
+      li If I pass an invalid URL that doesn't follow the valid http://www.example.com format, the JSON response will contain an error instead.
+      li When I visit that shortened URL, it will redirect me to my original link.
+
+    h2 How to use: 
+    ul
+      li To shorten a url, pass it in the form /new?url=http://www.example.com You will get a JSON respose in with the original URL you gave along with a shortened url ("newUrl")
+      li to visit a url once shortened, visit /:newUrl
