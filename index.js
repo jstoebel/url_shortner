@@ -22,7 +22,7 @@ mongo.connect(url, function(err, db) {
           var record = {"origUrl": url, "newUrl": docCount }
           urlCol.insert(record, function(err,createdRecord){
             if (err){
-              throw "could not insert record"
+              res.end("could not insert record!")
             }
             console.log("new url created!")
             var fullUrl = req.protocol + '://' + req.get('host') + "/" + docCount;
@@ -49,10 +49,15 @@ mongo.connect(url, function(err, db) {
 
       var newUrl = Number(req.params[0])
       urlCol.findOne({  "newUrl": newUrl}, function(err, record){
-        res.redirect(record.origUrl)
+        try{
+          res.redirect(record.origUrl)
+        } catch(err) {
+          res.end("failed to redirect!")
+        }
+
       })
 
-    }) //
+    }) //get url
 
 })
 
